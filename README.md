@@ -1,10 +1,10 @@
 # namecode
-right now point system works
-live dashboard works
-different teams and spymaster work
+1) right now point system works
+2) live dashboard works
+3) different teams and spymaster work
 
 
 todo:
-game end on black card word
-add spymaster log for hints
-list of words to be generated with ai
+1) game end on black card word
+2) add spymaster log for hints
+3) list of words to be generated with ai
