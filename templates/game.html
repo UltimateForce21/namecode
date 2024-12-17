@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Codenames - Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-info">
+            <h2>Game ID: {{ game_id }}</h2>
+            <div class="scoreboard">
+                <div class="score red-team">
+                    <h3>Red Team</h3>
+                    <p>Score: <span id="red-score">0</span></p>
+                    <p>Remaining: <span id="red-remaining">8</span></p>
+                </div>
+                <div id="current-team"></div>
+                <div class="score blue-team">
+                    <h3>Blue Team</h3>
+                    <p>Score: <span id="blue-score">0</span></p>
+                    <p>Remaining: <span id="blue-remaining">8</span></p>
+                </div>
+            </div>
+        </div>
+        <div id="game-board" class="game-board"></div>
+        <div class="controls">
+            <button onclick="toggleRole()">Toggle Spymaster</button>
+            <button onclick="joinTeam('red')">Join Red Team</button>
+            <button onclick="joinTeam('blue')">Join Blue Team</button>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+</body>
+</html> 

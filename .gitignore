@@ -1,0 +1,12 @@
+# Ignore virtual environment directory
+venv/
+
+# Ignore Python cache files
+__pycache__/
+
+# Optional: If you don't want to track the requirements.txt file, you can ignore it as well
+# requirements.txt
+
+# You can also include other common Python-related files:
+*.pyc
+*.pyo

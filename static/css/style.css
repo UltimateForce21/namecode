@@ -1,0 +1,146 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin: 20px auto;
+    max-width: 1000px;
+}
+
+.card {
+    aspect-ratio: 1.5;
+    background-color: #fff;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.card.revealed {
+    color: white;
+}
+
+.card.red { background-color: #ff4444; }
+.card.blue { background-color: #4444ff; }
+.card.neutral { background-color: #cccccc; }
+.card.assassin { background-color: #000000; }
+
+.controls {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+button.active {
+    background-color: #2d662f;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+}
+
+button[onclick="joinTeam('red')"] {
+    background-color: #ff4444;
+}
+
+button[onclick="joinTeam('red')"].active {
+    background-color: #cc0000;
+}
+
+button[onclick="joinTeam('blue')"] {
+    background-color: #4444ff;
+}
+
+button[onclick="joinTeam('blue')"].active {
+    background-color: #0000cc;
+}
+
+.scoreboard {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px auto;
+    max-width: 800px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.score {
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+}
+
+.score h3 {
+    margin: 0 0 10px 0;
+}
+
+.score p {
+    margin: 5px 0;
+}
+
+.red-team {
+    background-color: rgba(255, 68, 68, 0.8);
+}
+
+.blue-team {
+    background-color: rgba(68, 68, 255, 0.8);
+}
+
+#current-team {
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
+
+.current-team.winner {
+    font-size: 1.5em;
+    padding: 15px;
+    background-color: #ffd700;
+    color: #000;
+    animation: winner-pulse 2s infinite;
+}
+
+@keyframes winner-pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+} 
