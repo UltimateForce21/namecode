@@ -79,6 +79,29 @@ class Game:
         return {'success': False}
     
     def get_state(self):
+        # Check if assassin card was revealed
+        assassin_index = self.teams.index('assassin')
+        assassin_revealed = self.revealed[assassin_index]
+        assassin_revealed_by = None
+        
+        # If assassin was revealed, determine which team revealed it
+        if assassin_revealed:
+            # Find the last team that played before the current team
+            assassin_revealed_by = 'blue' if self.current_team == 'red' else 'red'
+        
+        game_over = (self.remaining_cards['red'] == 0 or 
+                     self.remaining_cards['blue'] == 0 or 
+                     assassin_revealed)
+        
+        winner = None
+        if game_over:
+            if assassin_revealed:
+                # If assassin was revealed, the other team wins
+                winner = 'blue' if assassin_revealed_by == 'red' else 'red'
+            else:
+                # Otherwise, winner is the team that found all their words
+                winner = 'red' if self.remaining_cards['red'] == 0 else 'blue'
+        
         return {
             'words': self.words,
             'teams': self.teams,
@@ -86,8 +109,8 @@ class Game:
             'current_team': self.current_team,
             'scores': self.scores,
             'remaining_cards': self.remaining_cards,
-            'game_over': self.remaining_cards['red'] == 0 or self.remaining_cards['blue'] == 0,
-            'winner': 'red' if self.remaining_cards['red'] == 0 else 'blue' if self.remaining_cards['blue'] == 0 else None
+            'game_over': game_over,
+            'winner': winner
         }
     
     def add_player_to_team(self, player_id, team, is_spymaster=False):
