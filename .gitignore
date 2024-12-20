@@ -10,3 +10,5 @@ __pycache__/
 # You can also include other common Python-related files:
 *.pyc
 *.pyo
+
+namecodestoken
