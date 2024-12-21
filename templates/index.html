@@ -8,14 +8,26 @@
     <div class="container">
         <h1>Codenames</h1>
         <div class="menu">
+            <div class="settings">
+                <label for="word-count">Total Game Words:</label>
+                <input type="number" id="word-count" value="25" min="16" max="40">
+                
+                <div class="theme-selector">
+                    <label for="theme">Theme:</label>
+                    <input type="text" id="theme" placeholder="e.g., Star Wars, One Piece">
+                    
+                    <label for="theme-word-count">Number of Theme Words:</label>
+                    <input type="number" id="theme-word-count" value="10" min="1" max="25">
+                    
+                    <div class="loading-bar" id="loading-bar">
+                        <div class="progress"></div>
+                    </div>
+                </div>
+            </div>
             <button onclick="createGame()">Create New Game</button>
             <div class="join-game">
                 <input type="text" id="game-id" placeholder="Enter Game ID">
                 <button onclick="joinGame()">Join Game</button>
-            </div>
-            <div class="settings">
-                <label for="word-count">Number of Words:</label>
-                <input type="number" id="word-count" value="25" min="16" max="40">
             </div>
         </div>
     </div>

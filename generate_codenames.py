@@ -30,51 +30,9 @@ system_prompt = (
 )
 
 
-# Updated chat template with cleaner output format
-messages = [
-    {
-        "role": "system",
-        "content": system_prompt,
-    },
-    {
-        "role": "user",
-        "content": "fruits 2"
-    },
-    {
-        "role": "assistant",
-        "content": "Apple, Banana"
-    },
-    {
-        "role": "user",
-        "content": "Star Wars 5"
-    },
-    {
-        "role": "assistant",
-        "content": "Lightsaber, Tatooine, Force, Vader, Millennium-Falcon"
-    },
-    {
-        "role": "user",
-        "content": "One Piece 5"
-    },
-    {
-        "role": "assistant",
-        "content": "Pirate, Devil-Fruit, Grand-Line, Nakama, Log-Pose"
-    },
-    {
-        "role": "user",
-        "content": "One Piece 5"
-    },
-    {
-        "role": "assistant",
-        "content": "Devil-Fruit, Thousand-Sunny, Wano, Gomu-Gomu, East-Blue"
-    },
-    {
-        "role": "user",
-        "content": "Soccer players 40"
-    }
-]
 
-prompt = pipe.tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+
+""" prompt = pipe.tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
 outputs = pipe(prompt, 
               max_new_tokens=100,
               do_sample=True, 
@@ -82,4 +40,69 @@ outputs = pipe(prompt,
               top_k=50, 
               top_p=0.95,
               pad_token_id=pipe.tokenizer.eos_token_id)
-print(outputs[0]["generated_text"])
+print(outputs[0]["generated_text"]) """
+
+def generate_words_from_theme(theme, count):
+   
+    # Updated chat template with cleaner output format
+    messages = [
+        {
+            "role": "system",
+            "content": system_prompt,
+        },
+        {
+            "role": "user",
+            "content": "fruits 2"
+        },
+        {
+            "role": "assistant",
+            "content": "Apple, Banana"
+        },
+        {
+            "role": "user",
+            "content": "Star Wars 5"
+        },
+        {
+            "role": "assistant",
+            "content": "Lightsaber, Tatooine, Force, Vader, Millennium-Falcon"
+        },
+        {
+            "role": "user",
+            "content": "One Piece 5"
+        },
+        {
+            "role": "assistant",
+            "content": "Pirate, Devil-Fruit, Grand-Line, Nakama, Log-Pose"
+        },
+        {
+            "role": "user",
+            "content": "One Piece 5"
+        },
+        {
+            "role": "user",
+            "content": f"{theme} {count}"
+        }
+    ]
+    
+    prompt = pipe.tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+    outputs = pipe(prompt, 
+                  max_new_tokens=100,
+                  do_sample=True, 
+                  temperature=0.7, 
+                  top_k=50, 
+                  top_p=0.95,
+                  pad_token_id=pipe.tokenizer.eos_token_id)
+    
+    # Extract and clean the generated words
+    generated_text = outputs[0]["generated_text"]
+    print(generated_text)
+    
+    # Find the last assistant message more reliably
+    parts = generated_text.split("<|assistant|>")
+    if len(parts) > 1:
+        assistant_response = parts[-1].split("</s>")[0].strip()
+        # Split by commas and clean each word
+        words = [word.strip() for word in assistant_response.split(',') if word.strip()]
+        return words[:count]  # Ensure we only return the requested number of words
+    else:
+        raise Exception("Failed to generate words from theme")

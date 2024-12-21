@@ -1,9 +1,19 @@
 import random
 
 class Game:
-    def __init__(self, word_count=25):
+    def __init__(self, word_count=25, custom_words=None):
         self.word_count = word_count
-        self.words = self.generate_words()
+        if custom_words:
+            # Combine custom words with default words if needed
+            default_words = self.generate_default_words()
+            needed_words = word_count - len(custom_words)
+            if needed_words > 0:
+                self.words = custom_words + random.sample(default_words, needed_words)
+            else:
+                self.words = custom_words[:word_count]
+        else:
+            self.words = self.generate_default_words()
+        
         self.teams = self.assign_teams()
         self.revealed = [False] * word_count
         self.current_team = 'red'
@@ -22,7 +32,7 @@ class Game:
             'blue': len([t for t in self.teams if t == 'blue'])
         }
         
-    def generate_words(self):
+    def generate_default_words(self):
         # This is a small sample word list - you should expand this
         word_list = [
             "APPLE", "BANK", "CARD", "DOG", "EAGLE", "FIRE", "GOLD", 

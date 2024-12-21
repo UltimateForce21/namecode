@@ -2,21 +2,76 @@ let socket;
 let isSpymaster = false;
 let currentTeam = null;
 
-function createGame() {
-    const wordCount = document.getElementById('word-count').value;
-    fetch('/create_game', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `word_count=${wordCount}`
-    })
-    .then(response => response.json())
-    .then(data => {
-        window.location.href = `/join_game/${data.game_id}`;
-
+async function createGame() {
+    const totalWordCount = document.getElementById('word-count').value;
+    const theme = document.getElementById('theme').value;
+    const themeWordCount = document.getElementById('theme-word-count').value;
+    const loadingBar = document.getElementById('loading-bar');
+    const progressBar = loadingBar.querySelector('.progress');
     
-    });
+    if (theme) {
+        if (themeWordCount > totalWordCount) {
+            alert('Theme word count cannot be greater than total word count');
+            return;
+        }
+        
+        try {
+            // Show loading bar
+            loadingBar.style.display = 'block';
+            progressBar.style.width = '30%';
+            
+            // Generate theme-based words
+            const response = await fetch('/generate_theme_words', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    theme: theme,
+                    word_count: parseInt(themeWordCount)
+                })
+            });
+            
+            progressBar.style.width = '60%';
+            
+            const data = await response.json();
+            if (!data.success) {
+                throw new Error(data.error);
+            }
+            
+            progressBar.style.width = '90%';
+            
+            // Create game with custom words
+            const gameResponse = await fetch('/create_game', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `word_count=${totalWordCount}&custom_words=${data.words.join(',')}`
+            });
+            
+            progressBar.style.width = '100%';
+            
+            const gameData = await gameResponse.json();
+            window.location.href = `/join_game/${gameData.game_id}`;
+            
+        } catch (error) {
+            alert('Error generating theme words: ' + error.message);
+            loadingBar.style.display = 'none';
+        }
+    } else {
+        // Create game with default words
+        const response = await fetch('/create_game', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `word_count=${totalWordCount}`
+        });
+        
+        const data = await response.json();
+        window.location.href = `/join_game/${data.game_id}`;
+    }
 }
 
 function joinGame() {
