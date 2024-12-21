@@ -72,11 +72,7 @@ def generate_words_from_theme(theme, count):
         },
         {
             "role": "assistant",
-            "content": "Pirate, Devil-Fruit, Grand-Line, Nakama, Log-Pose"
-        },
-        {
-            "role": "user",
-            "content": "One Piece 5"
+            "content": "Pirate, Devil-Fruit, Grand-Line, Nami, Log-Pose"
         },
         {
             "role": "user",
