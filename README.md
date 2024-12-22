@@ -2,9 +2,6 @@
 
 Welcome to **NameCode**, an interactive word game where teams compete to find words based on hints provided by a spymaster. This project involves multiple features, including a point system, live dashboard, team and spymaster functionality, and more. It's designed to bring an engaging experience to players by leveraging the power of AI and a dynamic user interface.
 
-![Start Page](start_screen.png)
-![Main Page](main_screen.png)
-
 ## Features
 
 - **Point System**: Tracks the progress of each team and scores based on correct guesses.
@@ -15,6 +12,12 @@ Welcome to **NameCode**, an interactive word game where teams compete to find wo
 - **AI-Generated Word Lists**: A list of words will be dynamically generated using AI to ensure a variety of game scenarios.
 - **Hugging Face Local Inference**: The game leverages the **TinyLlama** chat model from Hugging Face to locally generate words for the game. By running inference on the model locally, we ensure real-time, diverse word generation without the need for external API calls. This allows for smoother gameplay and greater control over the generated content.
 - **Network Access**: Open the game to everyone in your network. 
+
+
+![Start Page](start_screen.png)
+![Main Page](main_screen.png)
+
+
 
 ## Getting Started
 
