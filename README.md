@@ -14,7 +14,7 @@ Welcome to **NameCode**, an interactive word game where teams compete to find wo
 - **Network Access**: Open the game to everyone in your network. 
 
 
-![Start Page](start_screen.png)
+![Start Page](startingpage.png)
 ![Main Page](main_screen.png)
 
 
