@@ -2,7 +2,8 @@
 
 Welcome to **NameCode**, an interactive word game where teams compete to find words based on hints provided by a spymaster. This project involves multiple features, including a point system, live dashboard, team and spymaster functionality, and more. It's designed to bring an engaging experience to players by leveraging the power of AI and a dynamic user interface.
 
-![Main Page](https://example.com/path/to/your/image.jpg)
+![Start Page](start_screen.png)
+![Main Page](main_screen.png)
 
 ## Features
 
