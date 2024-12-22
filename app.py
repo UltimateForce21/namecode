@@ -84,5 +84,23 @@ def generate_theme_words():
 def generate_game_id():
     return ''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZ', k=6))
 
+@socketio.on('give_hint')
+def on_give_hint(data):
+    game_id = data['game_id']
+    hint = data['hint']
+    count = data['count']
+    team = data['team']
+    
+    game = games[game_id]
+    if game.current_team == team:
+        result = game.give_hint(hint, count)
+        if result['success']:
+            emit('update_game_state', game.get_state(), room=game_id)
+            emit('hint_given', {
+                'hint': hint,
+                'count': count,
+                'team': team
+            }, room=game_id)
+
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=5000, debug=True) 

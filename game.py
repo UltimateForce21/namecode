@@ -32,6 +32,12 @@ class Game:
             'blue': len([t for t in self.teams if t == 'blue'])
         }
         
+        # Add hint tracking
+        self.current_hint = None
+        self.current_hint_count = 0
+        self.guesses_remaining = 0
+        self.game_phase = 'giving_hint'  # ['giving_hint', 'guessing']
+        
     def generate_default_words(self):
         # This is a small sample word list - you should expand this
         word_list = [
@@ -49,15 +55,38 @@ class Game:
         random.shuffle(teams)
         return teams
     
+    def give_hint(self, hint, count):
+        """Spymaster gives a hint and number of related words"""
+        if self.game_phase != 'giving_hint':
+            return {'success': False, 'message': 'Not the hint-giving phase'}
+            
+        self.current_hint = hint
+        self.current_hint_count = count
+        self.guesses_remaining = count + 1  # Allow one extra guess
+        self.game_phase = 'guessing'
+        
+        return {
+            'success': True,
+            'hint': hint,
+            'count': count
+        }
+    
     def select_word(self, index, team):
+        """Modified to handle the guessing phase logic"""
+        if self.game_phase != 'guessing':
+            return {'success': False, 'message': 'Not the guessing phase'}
+            
         if not self.revealed[index]:
             self.revealed[index] = True
             actual_team = self.teams[index]
             
-            # Update scores when a card is revealed
+            # Update scores and remaining cards
             if actual_team in ['red', 'blue']:
                 self.scores[actual_team] += 1
                 self.remaining_cards[actual_team] -= 1
+            
+            # Decrement remaining guesses
+            self.guesses_remaining -= 1
             
             # Check win conditions
             game_over = False
@@ -76,17 +105,31 @@ class Game:
                 game_over = True
                 winner = 'blue'
             
-            # Switch turns if the team picks wrong color or neutral
-            if actual_team != team and not game_over:
+            # End turn conditions
+            end_turn = False
+            
+            # Wrong color or neutral ends turn
+            if actual_team != team:
+                end_turn = True
+            
+            # No more guesses ends turn
+            if self.guesses_remaining <= 0:
+                end_turn = True
+            
+            if end_turn and not game_over:
                 self.current_team = 'blue' if team == 'red' else 'red'
+                self.game_phase = 'giving_hint'
+                self.current_hint = None
+                self.current_hint_count = 0
             
             return {
                 'success': True,
                 'team': actual_team,
                 'game_over': game_over,
-                'winner': winner
+                'winner': winner,
+                'end_turn': end_turn
             }
-        return {'success': False}
+        return {'success': False, 'message': 'Word already revealed'}
     
     def get_state(self):
         # Check if assassin card was revealed
@@ -112,7 +155,8 @@ class Game:
                 # Otherwise, winner is the team that found all their words
                 winner = 'red' if self.remaining_cards['red'] == 0 else 'blue'
         
-        return {
+        # Create the base state dictionary
+        state = {
             'words': self.words,
             'teams': self.teams,
             'revealed': self.revealed,
@@ -120,8 +164,15 @@ class Game:
             'scores': self.scores,
             'remaining_cards': self.remaining_cards,
             'game_over': game_over,
-            'winner': winner
+            'winner': winner,
+            # Add hint-related state
+            'current_hint': self.current_hint,
+            'current_hint_count': self.current_hint_count,
+            'guesses_remaining': self.guesses_remaining,
+            'game_phase': self.game_phase
         }
+        
+        return state
     
     def add_player_to_team(self, player_id, team, is_spymaster=False):
         self.remove_player_from_teams(player_id)

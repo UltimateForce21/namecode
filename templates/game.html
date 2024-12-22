@@ -22,6 +22,15 @@
                     <p>Remaining: <span id="blue-remaining">8</span></p>
                 </div>
             </div>
+            <div class="hint-section">
+                <div id="hint-display" class="hint-display"></div>
+                
+                <div id="hint-controls" class="hint-controls" style="display: none;">
+                    <input type="text" id="hint-input" placeholder="Enter your hint">
+                    <input type="number" id="hint-count" placeholder="Number of words" min="1">
+                    <button onclick="giveHint()">Give Hint</button>
+                </div>
+            </div>
         </div>
         <div id="game-board" class="game-board"></div>
         <div class="controls">
